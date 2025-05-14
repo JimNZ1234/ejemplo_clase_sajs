@@ -1,18 +1,25 @@
 #Librerias:
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt # type: ignore
 #Seaborn para visualizacion de datos
-import seaborn as sns
+import seaborn as sns # type: ignore
 import os
+import io
 
 class DataAnalyzer:
     def __init__(self, data):
         self.df = data
 
     def summary(self):
-        print(self.df.info())
-        print(self.df.describe())
+        buffer = io.StringIO()
+        self.df.info(buf=buffer)
+        salida = buffer.getvalue()
+        salida_describe = self.df.describe().to_string()
+        salida += "\n\n" + salida_describe
+        return salida
+    
+        #print(self.df.describe())
 
     def missing_values(self):
         return self.df.isnull().sum()
