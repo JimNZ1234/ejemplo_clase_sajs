@@ -1,11 +1,11 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
+import seaborn as sns 
 import os
 import io
 from matplotlib.backends.backend_agg import FigureCanvasAgg
-from PIL import Image
+from PIL import Image 
 
 # Función auxiliar para convertir figura matplotlib a imagen PIL
 def fig_to_pil(fig):
