@@ -16,6 +16,7 @@ from analisis import DataAnalyzer
 from PIL import ImageTk
 
 data = pd.read_csv("adult.csv")
+df = data.copy()
 analizar = DataAnalyzer(data)
 
 def informacion():
@@ -45,6 +46,22 @@ def mostrar_categorico():
             img = analizar.categorical_analisis_col(sel)
             mostrar_imagenes(img)
 
+def añadir_usuario():
+    
+    cols = analizar.df.columns.tolist()
+    usuario = {}
+    for i in cols:
+        añadir = simpledialog.askstring("Añadir info" , f"Digita tu informacion de {i}: ")
+        if añadir:
+            usuario[i] = añadir
+        else:
+            messagebox.showwarning("Atencion", "No ingreso nada")
+
+    df.loc[len(df)] = usuario
+    df.to_csv("Nuevos_usuarios.csv", index = False)
+    print(df.tail())
+        
+
 ventana = tk.Tk()
 ventana.title("Visualización de los datos")
 ventana.geometry()
@@ -52,11 +69,14 @@ ventana.geometry()
 boton_summary = tk.Button(ventana, text="Resumen", command=informacion)
 boton_summary.grid(row=0, column=0)
 
-boton_numerico = tk.Button(ventana, text="Numerico", comman=mostrar_correlacion)
+boton_numerico = tk.Button(ventana, text="Numerico", command=mostrar_correlacion)
 boton_numerico.grid(row=0, column=1)
 
-boton_categorico = tk.Button(ventana, text="Categorico", comman=mostrar_categorico)
-boton_categorico.grid(row=0, column=2)
+boton_categorico = tk.Button(ventana, text="Categorico", command=mostrar_categorico)
+boton_categorico.grid(row=1, column=0)
+
+boton_usuarios = tk.Button(ventana, text="Añadir usuario", command=añadir_usuario)
+boton_usuarios.grid(row=2, column=0)
 
 text_area = ScrolledText(ventana, width= 70, height= 30)
 text_area.grid(row=1, column=1)
